@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>قفل تصویری گوشی - نمایش عدد واقعی</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    font-family: Arial, sans-serif;
+    direction: rtl;
+  }
+  .phone-lock {
+    width: 320px;
+    height: 640px;
+    background: linear-gradient(180deg, #222, #555);
+    border-radius: 40px;
+    box-shadow: 0 0 30px #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    box-sizing: border-box;
+  }
+  .screen {
+    flex: 1;
+    width: 100%;
+    background: #000;
+    border-radius: 30px;
+    color: #0f0;
+    font-size: 36px;
+    letter-spacing: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+  }
+  .keypad {
+    width: 100%;
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+  button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 28px;
+    padding: 15px 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    user-select: none;
+  }
+  button:hover {
+    background: #0f0;
+    color: #000;
+  }
+  .clear-btn {
+    grid-column: span 3;
+    background: #900;
+  }
+  .clear-btn:hover {
+    background: #f00;
+  }
+  .message {
+    margin-top: 10px;
+    font-size: 22px;
+    height: 30px;
+    color: #0f0;
+    min-height: 30px;
+  }
+</style>
+</head>
+<body>
+  <div class="phone-lock">
+    <div class="screen" id="screen"></div>
+    <div class="keypad">
+      <button onclick="pressKey('1')">1</button>
+      <button onclick="pressKey('2')">2</button>
+      <button onclick="pressKey('3')">3</button>
+      <button onclick="pressKey('4')">4</button>
+      <button onclick="pressKey('5')">5</button>
+      <button onclick="pressKey('6')">6</button>
+      <button onclick="pressKey('7')">7</button>
+      <button onclick="pressKey('8')">8</button>
+      <button onclick="pressKey('9')">9</button>
+      <button onclick="pressKey('0')">0</button>
+      <button class="clear-btn" onclick="clearInput()">پاک کردن</button>
+    </div>
+    <div class="message" id="message"></div>
+  </div>
+
+<script>
+  const screen = document.getElementById('screen');
+  const message = document.getElementById('message');
+  const correctPass = '1999';
+  let input = '';
+
+  function pressKey(num) {
+    if (input.length < 4) {
+      input += num;
+      screen.textContent = input;  // نمایش عدد واقعی
+    }
+    if (input.length === 4) {
+      checkPass();
+    }
+  }
+
+  function clearInput() {
+    input = '';
+    screen.textContent = '';
+    message.textContent = '';
+  }
+
+  function checkPass() {
+    if (input === correctPass) {
+      message.style.color = '#0f0';
+      message.textContent = 'قفل باز شد 🎉';
+      setTimeout(() => {
+        clearInput();
+      }, 2000);
+    } else {
+      message.style.color = '#f00';
+      message.textContent = 'رمز اشتباه است!';
+      setTimeout(() => {
+        clearInput();
+      }, 1500);
+    }
+  }
+</script>
+</body>
+</html>
