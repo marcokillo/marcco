@@ -1,64 +1,88 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>صفحه اس‌ام‌اس نوکیا</title>
-<style>
-  body {
-    background: #99cc99; /* رنگ پس‌زمینه سبز LCD نوکیا */
-    font-family: Tahoma, Arial, sans-serif;
-    margin: 0; padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .nokia-screen {
-    width: 320px;
-    height: 240px;
-    background: linear-gradient(to bottom, #c5e1b2 0%, #8fbf68 100%);
-    border: 4px solid #003300;
-    border-radius: 12px;
-    box-shadow: inset 0 0 10px #006600;
-    padding: 10px 15px;
-    color: #003300;
-    box-sizing: border-box;
-  }
-  .header {
-    background-color: #003300;
-    color: #c5e1b2;
-    font-weight: bold;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  .message {
-    font-size: 13px;
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
-  .signature {
-    margin-top: 15px;
-    font-weight: bold;
-    text-align: left;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>قفل تصویری نوکیا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: url('https://preview.redd.it/retro-nokia-i-found-this-wallpaper-from-one-of-twitters-user-v0-egt1o7zfc9h81.jpg?width=640&crop=smart&auto=webp&s=265d2197f89fe3a976db598fc12bc065cfbdd5a7') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Tahoma, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lock-container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 280px;
+    }
+    .lock-container input {
+      font-size: 22px;
+      padding: 12px;
+      width: 100%;
+      border: 2px solid #003300;
+      border-radius: 8px;
+      text-align: center;
+      letter-spacing: 10px;
+    }
+    .lock-container button {
+      margin-top: 15px;
+      font-size: 16px;
+      background-color: #003300;
+      color: #c5e1b2;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .lock-container button:hover {
+      background-color: #005500;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <div class="nokia-screen">
-    <div class="header">پیامک دریافتی - استفان</div>
-    <div class="message">
-الکساندرا،  
-من خسته‌ام. خسته از این بازی مسخره‌ای که انگار فقط من توش گیر افتادم.  
-تو همیشه همین بودی... ساکت، بی‌رحم، بی‌تفاوت.  
-ولی من نمی‌خوام کسی دیگه حتی فکر داشتنِ تو رو بکنه.  
-تو مثل یه تابلو هستی که باید فقط به دیوار من آویزون باشی.  
-یه روزی... بالاخره یه روزی، همه‌چی جای خودش قرار می‌گیره.
-    </div>
-    <div class="signature">– استفان</div>
+  <div class="lock-container">
+    <h3>قفل صفحه</h3>
+    <input type="password" id="pinInput" maxlength="4" placeholder="••••" />
+    <button onclick="checkPin()">باز کردن قفل</button>
+    <div class="error" id="errorMsg"></div>
   </div>
+
+  <script>
+    function checkPin() {
+      const pin = document.getElementById('pinInput').value;
+      const errorMsg = document.getElementById('errorMsg');
+      if (pin === '1965') {
+        // قفل باز شد، انتقال به صفحه بعد
+        window.location.href = 'sms.html'; // اینجا اسم فایل صفحه بعدی رو بذار
+      } else {
+        errorMsg.textContent = 'رمز اشتباه است!';
+        document.getElementById('pinInput').value = '';
+      }
+    }
+
+    document.getElementById('pinInput').addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        checkPin();
+      }
+    });
+  </script>
 </body>
 </html>
