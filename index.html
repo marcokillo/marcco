@@ -5,9 +5,6 @@
   <title>قفل تصویری نوکیا</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body, html {
       margin: 0;
       padding: 0;
@@ -18,38 +15,64 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
-    .lock-container {
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 20px 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+
+    .lock-screen {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 15px;
       text-align: center;
-      width: 280px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      transition: all 0.2s;
     }
-    .lock-container input {
-      font-size: 22px;
-      padding: 12px;
-      width: 100%;
-      border: 2px solid #003300;
-      border-radius: 8px;
-      text-align: center;
+
+    .lock-screen.shake {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .display {
+      font-size: 28px;
       letter-spacing: 10px;
-    }
-    .lock-container button {
-      margin-top: 15px;
-      font-size: 16px;
-      background-color: #003300;
-      color: #c5e1b2;
+      background-color: #e1ffe1;
+      color: #003300;
       padding: 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
+      margin-bottom: 20px;
+      border: 2px inset #003300;
+      border-radius: 8px;
+      height: 40px;
     }
-    .lock-container button:hover {
+
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .keyboard button {
+      font-size: 18px;
+      padding: 12px;
+      background-color: #003300;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .keyboard button:hover {
       background-color: #005500;
     }
+
     .error {
       color: red;
       margin-top: 10px;
@@ -58,31 +81,64 @@
   </style>
 </head>
 <body>
-  <div class="lock-container">
-    <h3>قفل صفحه</h3>
-    <input type="password" id="pinInput" maxlength="4" placeholder="••••" />
-    <button onclick="checkPin()">باز کردن قفل</button>
+  <div class="lock-screen" id="lockScreen">
+    <div class="display" id="codeDisplay"> </div>
+    <div class="keyboard">
+      <button onclick="press(1)">1</button>
+      <button onclick="press(2)">2</button>
+      <button onclick="press(3)">3</button>
+      <button onclick="press(4)">4</button>
+      <button onclick="press(5)">5</button>
+      <button onclick="press(6)">6</button>
+      <button onclick="press(7)">7</button>
+      <button onclick="press(8)">8</button>
+      <button onclick="press(9)">9</button>
+      <button onclick="clearCode()">←</button>
+      <button onclick="press(0)">0</button>
+      <button onclick="checkCode()">OK</button>
+    </div>
     <div class="error" id="errorMsg"></div>
   </div>
 
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_e3dc42069e.mp3?filename=button-124476.mp3" preload="auto"></audio>
+
   <script>
-    function checkPin() {
-      const pin = document.getElementById('pinInput').value;
-      const errorMsg = document.getElementById('errorMsg');
-      if (pin === '1965') {
-        // قفل باز شد، انتقال به صفحه بعد
-        window.location.href = 'sms.html'; // اینجا اسم فایل صفحه بعدی رو بذار
-      } else {
-        errorMsg.textContent = 'رمز اشتباه است!';
-        document.getElementById('pinInput').value = '';
+    let code = '';
+
+    function press(num) {
+      document.getElementById('clickSound').play();
+      if (code.length < 4) {
+        code += num;
+        updateDisplay();
       }
     }
 
-    document.getElementById('pinInput').addEventListener('keyup', function(event) {
-      if (event.key === 'Enter') {
-        checkPin();
+    function updateDisplay() {
+      document.getElementById('codeDisplay').textContent = code;
+    }
+
+    function clearCode() {
+      document.getElementById('clickSound').play();
+      code = code.slice(0, -1);
+      updateDisplay();
+    }
+
+    function checkCode() {
+      document.getElementById('clickSound').play();
+      if (code === '1965') {
+        window.location.href = 'sms.html';
+      } else {
+        document.getElementById('errorMsg').textContent = 'رمز اشتباه است';
+        code = '';
+        updateDisplay();
+
+        const screen = document.getElementById('lockScreen');
+        screen.classList.add('shake');
+        setTimeout(() => {
+          screen.classList.remove('shake');
+        }, 300);
       }
-    });
+    }
   </script>
 </body>
 </html>
