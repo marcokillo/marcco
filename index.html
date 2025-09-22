@@ -82,7 +82,11 @@
             width: 100%;
             max-width: 350px;
             margin: 0 auto;
-            touch-action: manipulation;
+            touch-action: none; /* جلوگیری از scroll */
+        }
+
+        .myLock * {
+            touch-action: none;
         }
 
         .myLock::before {
@@ -112,6 +116,7 @@
                 0 12px 24px rgba(0,0,0,0.3),
                 0 4px 8px rgba(0,0,0,0.5);
             width: 100%;
+            touch-action: none;
         }
 
         .lockLine {
@@ -153,6 +158,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            touch-action: none;
         }
 
         .dial {
@@ -170,7 +176,8 @@
             position: relative;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             flex: 1;
-            touch-action: manipulation;
+            touch-action: pan-y; /* فقط اجازه swipe عمودی */
+            user-select: none;
         }
 
         .dial:active {
@@ -178,7 +185,7 @@
             transition: transform 0.1s ease;
         }
 
-        /* رنگ آبی متالیک برای غلتک اول */
+        /* رنگ‌های دایال‌ها (بدون تغییر) */
         .dial:nth-child(1) {
             background: 
                 linear-gradient(180deg,
@@ -214,7 +221,6 @@
                 0 0 15px rgba(0,119,255,0.5);
         }
 
-        /* رنگ قرمز متالیک برای غلتک دوم */
         .dial:nth-child(2) {
             background: 
                 linear-gradient(180deg,
@@ -250,7 +256,6 @@
                 0 0 15px rgba(255,0,0,0.5);
         }
 
-        /* رنگ طلایی متالیک برای غلتک سوم */
         .dial:nth-child(3) {
             background: 
                 linear-gradient(180deg,
@@ -286,7 +291,6 @@
                 0 -1px 2px rgba(0,0,0,0.3);
         }
 
-        /* رنگ مشکی کروم برای غلتک چهارم */
         .dial:nth-child(4) {
             background: 
                 linear-gradient(180deg,
@@ -326,7 +330,7 @@
             list-style: none;
             position: relative;
             top: 45px;
-            transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             padding: 0;
             margin: 0;
         }
@@ -828,6 +832,7 @@
                 this.touchStartY = 0;
                 this.isTouching = false;
                 this.errorMessage = document.getElementById('errorMessage');
+                this.swipeThreshold = 15; // کاهش threshold از 30 به 15
                 
                 this.init();
             }
@@ -899,41 +904,60 @@
                 const dials = this.element.querySelectorAll('.dial');
                 const enterBtn = this.element.querySelector('#enterBtn');
                 
-                // Touch events for mobile
+                // Touch events for mobile - بهبود یافته
                 dials.forEach((dial, index) => {
                     // Click/Tap event
                     dial.addEventListener('click', (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         if (!this.isAnimating) {
                             this.rotateDial(index);
                         }
                     });
                     
-                    // Touch events for swipe
+                    // Touch events for swipe - حساسیت بیشتر
+                    let touchStartY = 0;
+                    let touchStartTime = 0;
+                    let isTouching = false;
+                    
                     dial.addEventListener('touchstart', (e) => {
-                        this.touchStartY = e.touches[0].clientY;
-                        this.isTouching = true;
+                        touchStartY = e.touches[0].clientY;
+                        touchStartTime = Date.now();
+                        isTouching = true;
                         e.preventDefault();
+                        e.stopPropagation();
                     }, { passive: false });
                     
                     dial.addEventListener('touchmove', (e) => {
-                        if (!this.isTouching || this.isAnimating) return;
+                        if (!isTouching || this.isAnimating) return;
+                        
+                        e.preventDefault();
+                        e.stopPropagation();
                         
                         const currentY = e.touches[0].clientY;
-                        const deltaY = currentY - this.touchStartY;
+                        const deltaY = currentY - touchStartY;
                         
-                        // Threshold for swipe detection
-                        if (Math.abs(deltaY) > 30) {
+                        // Threshold کمتر برای حساسیت بیشتر
+                        if (Math.abs(deltaY) > this.swipeThreshold) {
                             const direction = deltaY > 0 ? 1 : -1; // Down: +1, Up: -1
                             this.rotateDialWithDirection(index, direction);
-                            this.isTouching = false;
-                            e.preventDefault();
+                            isTouching = false;
                         }
                     }, { passive: false });
                     
-                    dial.addEventListener('touchend', () => {
-                        this.isTouching = false;
-                    });
+                    dial.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // اگر touch خیلی کوتاه بود، به عنوان کلیک عمل کن
+                        const touchDuration = Date.now() - touchStartTime;
+                        if (touchDuration < 150 && isTouching && !this.isAnimating) {
+                            this.rotateDial(index);
+                        }
+                        
+                        isTouching = false;
+                        setTimeout(() => { isTouching = false; }, 100);
+                    }, { passive: false });
                 });
                 
                 // Mouse events for desktop
@@ -953,7 +977,7 @@
                         const currentY = e.clientY;
                         const deltaY = currentY - startY;
                         
-                        if (Math.abs(deltaY) > 30) {
+                        if (Math.abs(deltaY) > this.swipeThreshold) {
                             const direction = deltaY > 0 ? 1 : -1;
                             this.rotateDialWithDirection(index, direction);
                             isDragging = false;
@@ -973,6 +997,7 @@
                 
                 enterBtn.addEventListener('touchend', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     this.checkCode();
                 });
                 
@@ -1002,8 +1027,9 @@
                 // محاسبه مقدار top جدید
                 const newTop = 45 - (newPosition * 45);
                 
-                // انیمیشن روان
-                ol.style.transition = `top ${0.4 * Math.abs(direction)}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+                // انیمیشن روان - سریع‌تر
+                const animationDuration = 0.25; // کاهش از 0.4 به 0.25
+                ol.style.transition = `top ${animationDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
                 ol.style.top = `${newTop}px`;
                 
                 // ریست موقعیت برای چرخش از 9 به 0 یا 0 به 9
@@ -1012,23 +1038,23 @@
                         ol.style.transition = 'none';
                         ol.style.top = '45px';
                         setTimeout(() => {
-                            ol.style.transition = 'top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                            ol.style.transition = `top ${animationDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
                             this.isAnimating = false;
                         }, 50);
-                    }, 400);
+                    }, animationDuration * 1000);
                 } else if (newPosition === 9 && direction === -1) {
                     setTimeout(() => {
                         ol.style.transition = 'none';
                         ol.style.top = '45px';
                         setTimeout(() => {
-                            ol.style.transition = 'top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                            ol.style.transition = `top ${animationDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
                             this.isAnimating = false;
                         }, 50);
-                    }, 400);
+                    }, animationDuration * 1000);
                 } else {
                     setTimeout(() => {
                         this.isAnimating = false;
-                    }, 400);
+                    }, animationDuration * 1000);
                 }
                 
                 this.updateDisplay();
@@ -1128,8 +1154,6 @@
                 }, 500);
             }
             
-            // تابع playClickSound حذف شده
-            
             playSuccessSound() {
                 // Mobile vibration pattern for success
                 if (navigator.vibrate) {
@@ -1201,15 +1225,27 @@
             });
         });
 
-        // Prevent zoom on double tap for iOS
+        // Prevent zoom on double tap for iOS - بهبود یافته
         let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
+        document.addEventListener('touchstart', function (event) {
+            if (event.touches.length > 1) {
                 event.preventDefault();
             }
-            lastTouchEnd = now;
+        }, { passive: false });
+
+        let lastTouchStart = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchStart <= 300) {
+                event.preventDefault();
+            }
+            lastTouchStart = now;
         }, false);
+
+        // جلوگیری از zoom در Safari iOS
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
