@@ -1,144 +1,879 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <title>قفل تصویری نوکیا</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: url('https://preview.redd.it/retro-nokia-i-found-this-wallpaper-from-one-of-twitters-user-v0-egt1o7zfc9h81.jpg?width=640&crop=smart&auto=webp&s=265d2197f89fe3a976db598fc12bc065cfbdd5a7') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Tahoma, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قفل ترکیبی حرفه‌ای</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .lock-screen {
-      background-color: rgba(255, 255, 255, 0.85);
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      transition: all 0.2s;
-    }
+        body {
+            background: radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 40%, #0a0a0a 100%);
+            font-family: 'Vazir', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
 
-    .lock-screen.shake {
-      animation: shake 0.3s;
-    }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255,255,255,0.01) 10px,
+                    rgba(255,255,255,0.01) 20px
+                );
+            pointer-events: none;
+        }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
+        .myCenter {
+            position: relative;
+            text-align: center;
+            perspective: 1200px;
+        }
 
-    .display {
-      font-size: 28px;
-      letter-spacing: 10px;
-      background-color: #e1ffe1;
-      color: #003300;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 2px inset #003300;
-      border-radius: 8px;
-      height: 40px;
-    }
+        .myLock {
+            display: inline-block;
+            text-align: center;
+            padding: 60px 70px;
+            background: 
+                linear-gradient(145deg, #f8f8f8 0%, #e8e8e8 20%, #d0d0d0 40%, #b8b8b8 60%, #a0a0a0 80%, #909090 100%),
+                radial-gradient(ellipse at top left, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0,0,0,0.2) 0%, transparent 50%);
+            background-blend-mode: normal, overlay, multiply;
+            border-radius: 35px;
+            box-shadow: 
+                0 2px 5px rgba(255,255,255,0.5) inset,
+                0 -2px 5px rgba(0,0,0,0.3) inset,
+                0 30px 60px rgba(0,0,0,0.5),
+                0 10px 20px rgba(0,0,0,0.7),
+                0 0 0 1px rgba(255,255,255,0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(2deg);
+        }
 
-    .keyboard {
-      display: grid;
-      grid-template-columns: repeat(3, 60px);
-      gap: 10px;
-      justify-content: center;
-    }
+        .myLock::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background: 
+                radial-gradient(ellipse at top, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 40px;
+            z-index: -1;
+        }
 
-    .keyboard button {
-      font-size: 18px;
-      padding: 12px;
-      background-color: #003300;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        .lockInset {
+            display: inline-block;
+            position: relative;
+            padding: 35px;
+            background: 
+                linear-gradient(135deg, #e0e0e0 0%, #c8c8c8 25%, #b0b0b0 50%, #989898 75%, #808080 100%),
+                radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 25px;
+            box-shadow: 
+                0 -3px 6px rgba(255,255,255,0.7) inset,
+                0 3px 6px rgba(0,0,0,0.5) inset,
+                0 15px 30px rgba(0,0,0,0.3),
+                0 5px 10px rgba(0,0,0,0.5);
+        }
 
-    .keyboard button:hover {
-      background-color: #005500;
-    }
+        .lockLine {
+            position: absolute;
+            left: -35px;
+            right: -35px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 8px;
+            background: 
+                linear-gradient(90deg, 
+                    rgba(0,0,0,0.4) 0%, 
+                    rgba(0,0,0,0.2) 45%, 
+                    rgba(0,0,0,0.4) 50%, 
+                    rgba(0,0,0,0.2) 55%, 
+                    rgba(0,0,0,0.4) 100%
+                );
+            border-radius: 4px;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.5) inset,
+                0 -1px 2px rgba(255,255,255,0.2);
+        }
 
-    .error {
-      color: red;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+        .lockWrapper {
+            text-align: center;
+            position: relative;
+            background: 
+                linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 10%, #1a1a1a 20%, #0d0d0d 80%, #000000 100%),
+                radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 15px;
+            height: 200px;
+            box-shadow: 
+                0 -2px 4px rgba(255,255,255,0.1) inset,
+                0 2px 8px rgba(0,0,0,0.8) inset,
+                0 10px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            direction: ltr;
+            padding: 10px;
+        }
+
+        .dial {
+            display: inline-block;
+            vertical-align: top;
+            height: 180px;
+            width: 95px;
+            margin: 0 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 52px;
+            font-family: 'Vazir', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* رنگ آبی متالیک برای غلتک اول */
+        .dial:nth-child(1) {
+            background: 
+                linear-gradient(180deg,
+                    #001133 0%,
+                    #002255 8%,
+                    #003377 16%,
+                    #004499 24%,
+                    #0055bb 32%,
+                    #0066dd 40%,
+                    #0077ff 48%,
+                    #4499ff 50%,
+                    #0077ff 52%,
+                    #0066dd 60%,
+                    #0055bb 68%,
+                    #004499 76%,
+                    #003377 84%,
+                    #002255 92%,
+                    #001133 100%
+                ),
+                radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.3) 0%, transparent 50%);
+            background-blend-mode: normal, screen, multiply;
+            border: 1px solid #003366;
+            box-shadow: 
+                0 -2px 4px rgba(255,255,255,0.4) inset,
+                0 2px 4px rgba(0,0,0,0.6) inset,
+                0 0 20px rgba(0,119,255,0.5),
+                0 10px 25px rgba(0,0,0,0.4);
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.8),
+                0 2px 4px rgba(0,0,0,0.8),
+                0 0 20px rgba(0,119,255,0.6);
+        }
+
+        /* رنگ قرمز متالیک برای غلتک دوم */
+        .dial:nth-child(2) {
+            background: 
+                linear-gradient(180deg,
+                    #330000 0%,
+                    #550000 8%,
+                    #770000 16%,
+                    #990000 24%,
+                    #bb0000 32%,
+                    #dd0000 40%,
+                    #ff0000 48%,
+                    #ff4444 50%,
+                    #ff0000 52%,
+                    #dd0000 60%,
+                    #bb0000 68%,
+                    #990000 76%,
+                    #770000 84%,
+                    #550000 92%,
+                    #330000 100%
+                ),
+                radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.3) 0%, transparent 50%);
+            background-blend-mode: normal, screen, multiply;
+            border: 1px solid #660000;
+            box-shadow: 
+                0 -2px 4px rgba(255,255,255,0.4) inset,
+                0 2px 4px rgba(0,0,0,0.6) inset,
+                0 0 20px rgba(255,0,0,0.5),
+                0 10px 25px rgba(0,0,0,0.4);
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.8),
+                0 2px 4px rgba(0,0,0,0.8),
+                0 0 20px rgba(255,0,0,0.6);
+        }
+
+        /* رنگ طلایی متالیک برای غلتک سوم */
+        .dial:nth-child(3) {
+            background: 
+                linear-gradient(180deg,
+                    #332200 0%,
+                    #554400 8%,
+                    #776600 16%,
+                    #998800 24%,
+                    #bbaa00 32%,
+                    #ddcc00 40%,
+                    #ffee00 48%,
+                    #ffff44 50%,
+                    #ffee00 52%,
+                    #ddcc00 60%,
+                    #bbaa00 68%,
+                    #998800 76%,
+                    #776600 84%,
+                    #554400 92%,
+                    #332200 100%
+                ),
+                radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.3) 0%, transparent 50%);
+            background-blend-mode: normal, screen, multiply;
+            border: 1px solid #665500;
+            box-shadow: 
+                0 -2px 4px rgba(255,255,255,0.5) inset,
+                0 2px 4px rgba(0,0,0,0.6) inset,
+                0 0 20px rgba(255,204,0,0.5),
+                0 10px 25px rgba(0,0,0,0.4);
+            color: #000000;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.9),
+                0 1px 2px rgba(255,255,255,0.8),
+                0 -1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* رنگ مشکی کروم برای غلتک چهارم */
+        .dial:nth-child(4) {
+            background: 
+                linear-gradient(180deg,
+                    #000000 0%,
+                    #0a0a0a 8%,
+                    #1a1a1a 16%,
+                    #2a2a2a 24%,
+                    #3a3a3a 32%,
+                    #4a4a4a 40%,
+                    #5a5a5a 48%,
+                    #6a6a6a 50%,
+                    #5a5a5a 52%,
+                    #4a4a4a 60%,
+                    #3a3a3a 68%,
+                    #2a2a2a 76%,
+                    #1a1a1a 84%,
+                    #0a0a0a 92%,
+                    #000000 100%
+                ),
+                radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.5) 0%, transparent 50%);
+            background-blend-mode: normal, screen, multiply;
+            border: 1px solid #333333;
+            box-shadow: 
+                0 -2px 4px rgba(255,255,255,0.6) inset,
+                0 2px 4px rgba(0,0,0,0.8) inset,
+                0 0 30px rgba(255,255,255,0.2),
+                0 10px 25px rgba(0,0,0,0.5);
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,1),
+                0 2px 4px rgba(0,0,0,1),
+                0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .dial:hover {
+            transform: scale(1.02) translateY(-2px);
+            filter: brightness(1.15) contrast(1.1);
+        }
+
+        .dial:active {
+            transform: scale(0.98) translateY(0);
+            filter: brightness(0.95);
+        }
+
+        .dial ol {
+            list-style: none;
+            position: relative;
+            top: 60px;
+            transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .dial ol li {
+            display: block;
+            height: 60px;
+            line-height: 60px;
+            margin: 0;
+            font-weight: 700;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            text-align: center;
+            position: relative;
+        }
+
+        .shadow {
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(180deg,
+                    rgba(0,0,0,0.9) 0%,
+                    rgba(0,0,0,0.7) 10%,
+                    rgba(0,0,0,0.3) 25%,
+                    transparent 40%,
+                    transparent 60%,
+                    rgba(0,0,0,0.3) 75%,
+                    rgba(0,0,0,0.7) 90%,
+                    rgba(0,0,0,0.9) 100%
+                );
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .btnEnter {
+            font-size: 24px;
+            font-family: 'Vazir', sans-serif;
+            font-weight: 700;
+            color: #1a1a1a;
+            cursor: pointer;
+            margin: 30px auto 0;
+            width: 320px;
+            height: 65px;
+            line-height: 65px;
+            display: block;
+            background: 
+                linear-gradient(145deg, #f0f0f0 0%, #e0e0e0 50%, #d0d0d0 100%),
+                radial-gradient(ellipse at top, rgba(255,255,255,0.8) 0%, transparent 60%);
+            background-blend-mode: normal, overlay;
+            border-radius: 32px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 
+                0 -3px 6px rgba(255,255,255,0.9) inset,
+                0 3px 6px rgba(0,0,0,0.3) inset,
+                0 10px 20px rgba(0,0,0,0.2),
+                0 5px 10px rgba(0,0,0,0.4);
+            transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .btnEnter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.6), 
+                transparent
+            );
+            transition: left 0.6s ease;
+        }
+
+        .btnEnter:hover {
+            transform: translateY(-1px);
+            box-shadow: 
+                0 -3px 6px rgba(255,255,255,1) inset,
+                0 3px 6px rgba(0,0,0,0.2) inset,
+                0 12px 24px rgba(0,0,0,0.25),
+                0 6px 12px rgba(0,0,0,0.45);
+            filter: brightness(1.05);
+        }
+
+        .btnEnter:hover::before {
+            left: 100%;
+        }
+
+        .btnEnter:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 -1px 3px rgba(255,255,255,0.6) inset,
+                0 1px 3px rgba(0,0,0,0.4) inset,
+                0 2px 6px rgba(0,0,0,0.2);
+            filter: brightness(0.95);
+        }
+
+        .status-display {
+            position: absolute;
+            top: -45px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(20,20,20,0.8) 100%);
+            color: #ff4444;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.4),
+                0 2px 5px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-display.success {
+            color: #44ff44;
+            animation: successPulse 0.6s ease;
+            box-shadow: 
+                0 5px 20px rgba(68,255,68,0.3),
+                0 2px 5px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .current-combo {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: 
+                linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%),
+                radial-gradient(ellipse at top, rgba(255,255,255,0.1) 0%, transparent 60%);
+            color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.1),
+                inset 0 -2px 4px rgba(0,0,0,0.5),
+                0 10px 30px rgba(0,0,0,0.5),
+                0 5px 15px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Courier New', monospace;
+            min-width: 120px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-combo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.1), 
+                transparent
+            );
+            animation: comboShine 3s linear infinite;
+        }
+
+        @keyframes comboShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .current-combo::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #0077ff, #ff0077, #77ff00, #ff7700, #0077ff
+            );
+            border-radius: 30px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+            filter: blur(3px);
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .myLock {
+                padding: 40px 50px;
+            }
+            
+            .dial {
+                width: 75px;
+                margin: 0 6px;
+                font-size: 40px;
+            }
+            
+            .dial ol li {
+                height: 50px;
+                line-height: 50px;
+            }
+            
+            .btnEnter {
+                width: 260px;
+                font-size: 20px;
+                height: 55px;
+                line-height: 55px;
+            }
+
+            .current-combo {
+                font-size: 20px;
+                letter-spacing: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dial {
+                width: 65px;
+                margin: 0 4px;
+                font-size: 36px;
+            }
+            
+            .btnEnter {
+                width: 220px;
+                font-size: 18px;
+            }
+
+            .current-combo {
+                font-size: 18px;
+                letter-spacing: 4px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="lock-screen" id="lockScreen">
-    <div class="display" id="codeDisplay"> </div>
-    <div class="keyboard">
-      <button onclick="press(1)">1</button>
-      <button onclick="press(2)">2</button>
-      <button onclick="press(3)">3</button>
-      <button onclick="press(4)">4</button>
-      <button onclick="press(5)">5</button>
-      <button onclick="press(6)">6</button>
-      <button onclick="press(7)">7</button>
-      <button onclick="press(8)">8</button>
-      <button onclick="press(9)">9</button>
-      <button onclick="clearCode()">←</button>
-      <button onclick="press(0)">0</button>
-      <button onclick="checkCode()">OK</button>
+    <div class="myCenter">
+        <div id="lock" data-dials="4">
+            <div class="status-display" id="statusDisplay">قفل شده</div>
+            <div class="current-combo" id="currentCombo">0000</div>
+        </div>
     </div>
-    <div class="error" id="errorMsg"></div>
-  </div>
 
-  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_e3dc42069e.mp3?filename=button-124476.mp3" preload="auto"></audio>
+    <script>
+        class CombinationLock {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.dials = options.dials || parseInt(element.dataset.dials) || 4;
+                this.correctCode = options.correctCode || '1234';
+                this.currentCode = new Array(this.dials).fill(0);
+                this.isLocked = true;
+                this.dialPositions = new Array(this.dials).fill(0);
+                this.isAnimating = false;
+                
+                this.init();
+            }
+            
+            init() {
+                this.buildLock();
+                this.attachEvents();
+                this.updateDisplay();
+            }
+            
+            buildLock() {
+                this.element.className = 'myLock';
+                
+                const lockInset = document.createElement('div');
+                lockInset.className = 'lockInset';
+                
+                const lockLine = document.createElement('div');
+                lockLine.className = 'lockLine';
+                
+                const lockWrapper = document.createElement('div');
+                lockWrapper.className = 'lockWrapper';
+                
+                // Create dials
+                for (let i = 0; i < this.dials; i++) {
+                    const dial = document.createElement('div');
+                    dial.className = 'dial';
+                    dial.dataset.index = i;
+                    
+                    const ol = document.createElement('ol');
+                    
+                    // اضافه کردن عدد 0 در ابتدا برای نمایش صحیح
+                    const zeroLi = document.createElement('li');
+                    zeroLi.textContent = '0';
+                    ol.appendChild(zeroLi);
+                    
+                    // اضافه کردن اعداد 1 تا 9
+                    for (let n = 1; n <= 9; n++) {
+                        const li = document.createElement('li');
+                        li.textContent = n;
+                        ol.appendChild(li);
+                    }
+                    
+                    // اضافه کردن کپی از 0 در انتها برای چرخش روان
+                    const zeroClone = document.createElement('li');
+                    zeroClone.textContent = '0';
+                    ol.appendChild(zeroClone);
+                    
+                    dial.appendChild(ol);
+                    lockWrapper.appendChild(dial);
+                }
+                
+                const shadow = document.createElement('div');
+                shadow.className = 'shadow';
+                lockWrapper.appendChild(shadow);
+                
+                lockInset.appendChild(lockLine);
+                lockInset.appendChild(lockWrapper);
+                
+                const enterBtn = document.createElement('div');
+                enterBtn.className = 'btnEnter';
+                enterBtn.textContent = '🔓 باز کردن';
+                enterBtn.id = 'enterBtn';
+                
+                this.element.appendChild(lockInset);
+                this.element.appendChild(enterBtn);
+            }
+            
+            attachEvents() {
+                const dials = this.element.querySelectorAll('.dial');
+                const enterBtn = this.element.querySelector('#enterBtn');
+                
+                dials.forEach((dial, index) => {
+                    dial.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (!this.isAnimating) {
+                            this.rotateDial(index);
+                        }
+                    });
+                });
+                
+                enterBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.checkCode();
+                });
+                
+                // Keyboard support
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !this.isAnimating) {
+                        this.checkCode();
+                    }
+                });
+            }
+            
+            rotateDial(index) {
+                if (this.isAnimating) return;
+                
+                this.isAnimating = true;
+                const dial = this.element.querySelectorAll('.dial')[index];
+                const ol = dial.querySelector('ol');
+                
+                // محاسبه موقعیت جدید
+                this.currentCode[index] = (this.currentCode[index] + 1) % 10;
+                const newPosition = this.currentCode[index];
+                
+                // محاسبه مقدار top جدید
+                const newTop = 60 - (newPosition * 60);
+                
+                // انیمیشن روان
+                ol.style.transition = 'top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                ol.style.top = `${newTop}px`;
+                
+                // ریست موقعیت برای چرخش از 9 به 0
+                if (newPosition === 0) {
+                    setTimeout(() => {
+                        ol.style.transition = 'none';
+                        ol.style.top = '60px';
+                        setTimeout(() => {
+                            ol.style.transition = 'top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                            this.isAnimating = false;
+                        }, 50);
+                    }, 400);
+                } else {
+                    setTimeout(() => {
+                        this.isAnimating = false;
+                    }, 400);
+                }
+                
+                this.updateDisplay();
+                this.playClickSound();
+            }
+            
+            checkCode() {
+                const enteredCode = this.currentCode.join('');
+                const statusDisplay = document.getElementById('statusDisplay');
+                
+                if (enteredCode === this.correctCode) {
+                    this.isLocked = false;
+                    statusDisplay.textContent = '✅ باز شد!';
+                    statusDisplay.className = 'status-display success';
+                    this.playSuccessSound();
+                    this.celebrateUnlock();
+                } else {
+                    statusDisplay.textContent = '❌ رمز اشتباه';
+                    statusDisplay.className = 'status-display';
+                    this.playErrorSound();
+                    this.shakeAnimation();
+                }
+                
+                setTimeout(() => {
+                    if (!this.isLocked) {
+                        statusDisplay.textContent = '🔓 باز';
+                    } else {
+                        statusDisplay.textContent = '🔒 قفل شده';
+                    }
+                    statusDisplay.className = 'status-display';
+                }, 2000);
+            }
+            
+            updateDisplay() {
+                const currentCombo = document.getElementById('currentCombo');
+                currentCombo.textContent = this.currentCode.join('');
+            }
+            
+            celebrateUnlock() {
+                const lock = this.element;
+                lock.style.animation = 'unlockCelebrate 1s ease-in-out';
+                
+                if (!document.getElementById('celebrate-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'celebrate-styles';
+                    style.textContent = `
+                        @keyframes unlockCelebrate {
+                            0% { transform: scale(1) rotate(0deg); }
+                            25% { transform: scale(1.05) rotate(1deg); }
+                            50% { transform: scale(1.1) rotate(-1deg); }
+                            75% { transform: scale(1.05) rotate(1deg); }
+                            100% { transform: scale(1) rotate(0deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                setTimeout(() => {
+                    lock.style.animation = '';
+                }, 1000);
+            }
+            
+            shakeAnimation() {
+                const lock = this.element;
+                lock.style.animation = 'shake 0.5s ease-in-out';
+                
+                if (!document.getElementById('shake-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'shake-styles';
+                    style.textContent = `
+                        @keyframes shake {
+                            0%, 100% { transform: translateX(0); }
+                            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                            20%, 40%, 60%, 80% { transform: translateX(5px); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                setTimeout(() => {
+                    lock.style.animation = '';
+                }, 500);
+            }
+            
+            playClickSound() {
+                if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                    const audioContext = new (AudioContext || webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                }
+            }
+            
+            playSuccessSound() {
+                if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                    const audioContext = new (AudioContext || webkitAudioContext)();
+                    
+                    // Play success melody
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    notes.forEach((freq, index) => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.15);
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.15);
+                        gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + index * 0.15 + 0.02);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.15 + 0.3);
+                        
+                        oscillator.start(audioContext.currentTime + index * 0.15);
+                        oscillator.stop(audioContext.currentTime + index * 0.15 + 0.3);
+                    });
+                }
+            }
+            
+            playErrorSound() {
+                if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                    const audioContext = new (AudioContext || webkitAudioContext)();
+                    
+                    // Play error sound (two low tones)
+                    const frequencies = [200, 150];
+                    frequencies.forEach((freq, index) => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.2);
+                        oscillator.type = 'sawtooth';
+                        
+                        gainNode.gain.setValueAtTime(0.08, audioContext.currentTime + index * 0.2);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.2 + 0.2);
+                        
+                        oscillator.start(audioContext.currentTime + index * 0.2);
+                        oscillator.stop(audioContext.currentTime + index * 0.2 + 0.2);
+                    });
+                }
+            }
+        }
 
-  <script>
-    let code = '';
-
-    function press(num) {
-      document.getElementById('clickSound').play();
-      if (code.length < 4) {
-        code += num;
-        updateDisplay();
-      }
-    }
-
-    function updateDisplay() {
-      document.getElementById('codeDisplay').textContent = code;
-    }
-
-    function clearCode() {
-      document.getElementById('clickSound').play();
-      code = code.slice(0, -1);
-      updateDisplay();
-    }
-
-    function checkCode() {
-      document.getElementById('clickSound').play();
-      if (code === '1965') {
-        window.location.href = 'sms.html';
-      } else {
-        document.getElementById('errorMsg').textContent = 'رمز اشتباه است';
-        code = '';
-        updateDisplay();
-
-        const screen = document.getElementById('lockScreen');
-        screen.classList.add('shake');
-        setTimeout(() => {
-          screen.classList.remove('shake');
-        }, 300);
-      }
-    }
-  </script>
+        // Initialize the lock when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const lockElement = document.getElementById('lock');
+            new CombinationLock(lockElement, {
+                dials: 4,
+                correctCode: '5263' // می‌توانید رمز را تغییر دهید
+            });
+        });
+    </script>
 </body>
 </html>
